@@ -9,7 +9,7 @@ using System.Text;
 
 namespace KelvinDataManager.Library.Internal.DataAccess
 {
-    internal class SqlDataAccess // "Internal" meaning this class is not visible outside of the library
+    internal class SqlDataAccess : IDisposable // "Internal" meaning this class is not visible outside of the library
     {
         public string GetConnectionString(string name)
         {
@@ -45,5 +45,53 @@ namespace KelvinDataManager.Library.Internal.DataAccess
                     commandType: CommandType.StoredProcedure);
             }
         }
+
+        private IDbConnection _connection;
+        private IDbTransaction _transaction;
+        public void StartTransaction(string connectionStringName)
+        {
+            string connectionString = GetConnectionString(connectionStringName);
+            _connection = new SqlConnection(connectionString);
+            _connection.Open();
+            _transaction = _connection.BeginTransaction();
+
+
+        }
+
+        public void SaveDataInTransaction<T>(string storedProcedure, T parameters)
+        {
+            _connection.Execute(storedProcedure, parameters, commandType: CommandType.StoredProcedure
+                , transaction:_transaction);// pass in the ongoing transaction
+        }
+
+        public List<T> LoadDataInTransaction<T, U>(string storedProcedure, U parameters)
+        {
+            List<T> rows = _connection.Query<T>(storedProcedure, parameters,
+                commandType: CommandType.StoredProcedure, transaction: _transaction).ToList();
+            return rows;
+        } 
+
+        public void CommitTransaction()
+        {
+            _transaction?.Commit(); // if tranx succeed, we commit it; "?" is null check, if _trans is null, we 're not calling "Commit" method.
+            
+            _connection?.Close();
+        }
+
+        public void RollbackTransaction()
+        {
+            _transaction?.Rollback();
+            _connection?.Close();
+        }
+
+        public void Dispose()
+        {
+            CommitTransaction();
+        }
+        // Open connection/start transaction method
+        // load using the transx
+        // save using the tranx
+        // close connection/stop tranx method
+        // Clean up connection
     }
 }

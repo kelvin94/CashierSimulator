@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using KelvinDataManager.Library.Internal.DataAccess;
-using KelvinDataManager.Library.Models;
 
 namespace KelvinDataManager.Library.DataAccess
 {
