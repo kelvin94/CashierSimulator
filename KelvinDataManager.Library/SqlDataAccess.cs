@@ -48,6 +48,7 @@ namespace KelvinDataManager.Library.Internal.DataAccess
 
         private IDbConnection _connection;
         private IDbTransaction _transaction;
+        private Boolean isClosed = false;
         public void StartTransaction(string connectionStringName)
         {
             string connectionString = GetConnectionString(connectionStringName);
@@ -55,7 +56,7 @@ namespace KelvinDataManager.Library.Internal.DataAccess
             _connection.Open();
             _transaction = _connection.BeginTransaction();
 
-
+            isClosed = false;
         }
 
         public void SaveDataInTransaction<T>(string storedProcedure, T parameters)
@@ -76,17 +77,31 @@ namespace KelvinDataManager.Library.Internal.DataAccess
             _transaction?.Commit(); // if tranx succeed, we commit it; "?" is null check, if _trans is null, we 're not calling "Commit" method.
             
             _connection?.Close();
+            isClosed = true;
         }
 
         public void RollbackTransaction()
         {
             _transaction?.Rollback();
             _connection?.Close();
+            isClosed = true;
         }
 
         public void Dispose()
         {
-            CommitTransaction();
+            if(!isClosed == true)
+            {
+                try {
+                    CommitTransaction();
+                } catch
+                {
+                    // Log this exception message
+                }
+                
+
+            }
+            _transaction = null;
+            _connection = null;
         }
         // Open connection/start transaction method
         // load using the transx
