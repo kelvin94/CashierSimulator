@@ -1,5 +1,6 @@
 ﻿using KelvinDataManager.Library.Internal.DataAccess;
 using KelvinDataManager.Library.Models;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,18 @@ namespace KelvinDataManager.Library.DataAccess
 {
     public class SaleData
     {
+        private readonly IConfiguration config;
+
+        public SaleData(IConfiguration config)
+        {
+            this.config = config;
+        }
         public void SaveSale(SaleModel saleAPIInput, string cashierId)
         {
             System.Diagnostics.Debug.WriteLine("Start SaveSale");
             // Filling in the sale deal models we'll save to the db
             List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
-            ProductData productDataAccess = new ProductData();
+            ProductData productDataAccess = new ProductData(config);
             foreach(var item in saleAPIInput.SaleDetails)
             {
                 // Fill in the available info 
@@ -52,7 +59,7 @@ namespace KelvinDataManager.Library.DataAccess
             };
             sale.Total = sale.SubTotal;
             // save the model
-            using (SqlDataAccess sql = new SqlDataAccess())
+            using (SqlDataAccess sql = new SqlDataAccess(config))
             {
                 try
                 {
@@ -88,7 +95,7 @@ namespace KelvinDataManager.Library.DataAccess
 
         public List<SaleReportModel> GetSalesReport()
         {
-            SqlDataAccess sql = new SqlDataAccess();
+            SqlDataAccess sql = new SqlDataAccess(config);
 
             var output = sql.LoadData<SaleReportModel, dynamic>("dbo.spSale_SaleReport", new { }, "KelvinData");
 

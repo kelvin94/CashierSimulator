@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -11,6 +12,11 @@ namespace KelvinDataManager.Library.Internal.DataAccess
 {
     internal class SqlDataAccess : IDisposable // "Internal" meaning this class is not visible outside of the library
     {
+        public SqlDataAccess(IConfiguration config)
+        {
+            this.config = config;
+        }
+
         public string GetConnectionString(string name)
         {
             /**
@@ -18,7 +24,10 @@ namespace KelvinDataManager.Library.Internal.DataAccess
             goes out to the Web.config or App.config gets the connection string with a matching
             name and returns that ConnectionString
              */
-            return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+            //return ConfigurationManager.ConnectionStrings[name].ConnectionString;
+
+            // ASP.NET core way to retrieve connnectionString
+            return this.config.GetConnectionString(name); // "GetConnectionString" read appsettings.json file.
         }
 
         // Using Dapper, which is a micro ORM, allows us to talk to the DB get the info back and map 
@@ -49,6 +58,8 @@ namespace KelvinDataManager.Library.Internal.DataAccess
         private IDbConnection _connection;
         private IDbTransaction _transaction;
         private Boolean isClosed = false;
+        private readonly IConfiguration config;
+
         public void StartTransaction(string connectionStringName)
         {
             string connectionString = GetConnectionString(connectionStringName);
