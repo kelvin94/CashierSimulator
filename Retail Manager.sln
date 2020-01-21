@@ -9,6 +9,10 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "KelvinData", "KelvinData\Ke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KelvinDataManager.Library", "KelvinDataManager.Library\KelvinDataManager.Library.csproj", "{CFFFA391-AB83-4515-ADDA-92E40C12543B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{55ADCACC-E73E-46B5-9D3E-EC3CD04CD72F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{EB6FF81F-7DB1-46EB-B9E1-47D57BE71FF1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +36,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0D4568AC-01A2-426E-8AC1-F0AC0CCC21DE} = {EB6FF81F-7DB1-46EB-B9E1-47D57BE71FF1}
+		{4D25CE88-46FA-4719-9FF1-1E02E1490DCC} = {55ADCACC-E73E-46B5-9D3E-EC3CD04CD72F}
+		{CFFFA391-AB83-4515-ADDA-92E40C12543B} = {EB6FF81F-7DB1-46EB-B9E1-47D57BE71FF1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D3F1DD3D-FD1E-441C-AC51-B0137F2431FE}
