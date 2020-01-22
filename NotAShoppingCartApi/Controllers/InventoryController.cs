@@ -22,6 +22,7 @@ namespace NotAShoppingCartApi.Controllers
         }
 
         [Authorize(Roles = "Manager,Admin")]
+        [HttpGet]
         public List<InventoryModel> Get()
         {
             InventoryData data = new InventoryData(config);
@@ -29,6 +30,7 @@ namespace NotAShoppingCartApi.Controllers
         }
 
         [Authorize(Roles = "Admin")]
+        [HttpPost]
         public void Post(InventoryModel item)
         {
             InventoryData data = new InventoryData(config);

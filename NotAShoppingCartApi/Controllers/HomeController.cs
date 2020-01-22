@@ -35,21 +35,21 @@ namespace NotAShoppingCartApi.Controllers
 
         public async Task<IActionResult> Privacy()
         {
-            string[] roles = { "Manager", "Cashier", "Admin" };
-            foreach(var role in roles)
-            {
-                var roleExist = await _roleManager.RoleExistsAsync(role);
-                if(!roleExist)
-                {
-                    await _roleManager.CreateAsync(new IdentityRole(role));
-                }
-            }
-            var user = await userManager.FindByEmailAsync("kelvin@lin.com");
-            if(user != null)
-            {
-                await userManager.AddToRoleAsync(user, "Cashier");
-                await userManager.AddToRoleAsync(user, "Admin");
-            }
+            //string[] roles = { "Manager", "Cashier", "Admin" };
+            //foreach(var role in roles)
+            //{
+            //    var roleExist = await _roleManager.RoleExistsAsync(role);
+            //    if(!roleExist)
+            //    {
+            //        await _roleManager.CreateAsync(new IdentityRole(role));
+            //    }
+            //}
+            //var user = await userManager.FindByEmailAsync("kelvin@lin.com");
+            //if(user != null)
+            //{
+            //    await userManager.AddToRoleAsync(user, "Cashier");
+            //    await userManager.AddToRoleAsync(user, "Admin");
+            //}
             return View();
         }
 

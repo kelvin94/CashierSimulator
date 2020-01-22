@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using KelvinDataManager.Library.DataAccess;
 using KelvinDataManager.Library.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -50,7 +51,7 @@ namespace NotAShoppingCartApi.Controllers
         }
 
         [HttpGet]
-        [Route("api/User/Admin/GetAllUsers")]
+        [Route("Admin/GetAllUsers")]
         public List<ApplicationUserModel> GetAllUsers()
         {
             List<ApplicationUserModel> output = new List<ApplicationUserModel>();

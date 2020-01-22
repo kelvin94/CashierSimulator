@@ -25,6 +25,7 @@ namespace NotAShoppingCartApi.Controllers
         }
 
         [Authorize(Roles = "Cashier")]
+        [HttpPost]
         public void Post(SaleModel sale)
         {
             SaleData data = new SaleData(config);
@@ -35,6 +36,7 @@ namespace NotAShoppingCartApi.Controllers
 
         [Authorize(Roles = "Admin,Manager")]
         [Route("GetSaleReport")]
+        [HttpGet]
         public List<SaleReportModel> GetSaleReport()
         {
             SaleData data = new SaleData(config);

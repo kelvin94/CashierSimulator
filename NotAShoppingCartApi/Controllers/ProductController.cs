@@ -13,7 +13,7 @@ namespace NotAShoppingCartApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles ="Cashier")]
+    [Authorize(Roles ="Cashier,Admin")]
     public class ProductController : ControllerBase
     {
         private readonly IConfiguration config;
@@ -22,6 +22,7 @@ namespace NotAShoppingCartApi.Controllers
         {
             this.config = config;
         }
+        [HttpGet]
         public List<ProductModel> Get()
         {
             ProductData data = new ProductData(config);
